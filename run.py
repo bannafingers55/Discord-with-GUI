@@ -14,7 +14,7 @@ try:
 except:
 	f = open("data/token.data", "w+")
 	window = tk.Tk()
-	label = tk.Label(window, text="ENTER YPUR TOKEN")
+	label = tk.Label(window, text="ENTER YOUR TOKEN")
 	label.pack()
 	entry = tk.Entry(window)
 	entry.pack()

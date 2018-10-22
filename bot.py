@@ -10,6 +10,17 @@ import random
 from datetime import datetime
 import wikipedia
 
+f = open("cmds/index", "r")
+cmdIndex = f.read()
+f.close()
+cmdIndex = cmdIndex.split("\n")
+cmdDict = {}
+i = 0
+while i < len(cmdIndex) -1:
+    cmdDict[cmdIndex[i]] = cmdIndex[i + 1]
+    i += 2
+
+print(cmdDict)
 
 #Platform check
 if os.name == "nt":
@@ -99,31 +110,20 @@ class FilterBot(discord.Client):
         await self.send_message(channel, embed=em)
 
 
-
-    async def on_message(self, message, channel):
-        msg = message.content
-        if msg.startswith(">") == False:
-            await self.send_message(channel, "NOPE")
-            return
-        print("RECIVED")
-        msg = msg.split(">")
-        msg = msg[1]
-        f = open("cmds\index.i", "r")
-        index = f.read()
-        f.close()
-        f.split("\n")
-        if msg not in index:
-            return
-        filename = "cmds\{}".format(msg)
-        f = open(filename, "r")
-        content = f.read()
-        f.close()
-        await self.send_message(channel, content)
-
     async def on_message(self, message):
         msg = message.content
         if msg.startswith(">") == False:
             return
+        print(message)
+        ct = msg.split(">")
+        ct = ct[1]
+        print(ct)
+        try:
+            response = cmdDict[ct]
+            await self.send_message(message.channel, response)
+        except:
+            print("Not command")
+
 
         command, *args = message.content.split(
             ' ')  # Uh, doesn't this break prefixes with spaces in them (it doesn't, config parser already breaks them)
